@@ -46,32 +46,15 @@ export function App(): React.ReactElement {
 
 			<div>
 				<h2>Settings</h2>
-				<label htmlFor="tm">
-					The current Tendermint RPC endpoint we&apos;re using:
-				</label>
-				<input
-					name="tmUrl"
-					value={tmUrl}
-					onChange={({ target: { value } }) => setTmUrl(value)}
-				/>
+				<label htmlFor="tm">The current Tendermint RPC endpoint we&apos;re using:</label>
+				<input name="tmUrl" value={tmUrl} onChange={({ target: { value } }) => setTmUrl(value)} />
 				<p>
 					Switch to a known public endpoint:
-					<button onClick={() => setTmUrl(DEVNET_NODE_TM_URL)}>
-						Official Regen Devnet node
-					</button>
-					<button onClick={() => setTmUrl(AMAURY_NODE_TM_URL)}>
-						Amaury&apos;s node
-					</button>
+					<button onClick={() => setTmUrl(DEVNET_NODE_TM_URL)}>Official Regen Devnet node</button>
+					<button onClick={() => setTmUrl(AMAURY_NODE_TM_URL)}>Amaury&apos;s node</button>
 				</p>
 
-				<p>
-					Tendermint Client Status:{' '}
-					{tmError?.message
-						? tmError?.message
-						: api
-						? 'ok'
-						: 'loading...'}
-				</p>
+				<p>Tendermint Client Status: {tmError?.message ? tmError?.message : api ? 'ok' : 'loading...'}</p>
 			</div>
 		</div>
 	);

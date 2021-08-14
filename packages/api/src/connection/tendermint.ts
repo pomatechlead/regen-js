@@ -11,11 +11,7 @@ import type { Connection } from './types';
 export function createTendermintConnection(client: Client): Connection {
 	return {
 		queryConnection: {
-			async request(
-				service: string,
-				method: string,
-				data: Uint8Array
-			): Promise<Uint8Array> {
+			async request(service: string, method: string, data: Uint8Array): Promise<Uint8Array> {
 				const { value } = await client.abciQuery({
 					path: `/${service}/${method}`,
 					data,
