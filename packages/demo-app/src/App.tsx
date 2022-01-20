@@ -5,7 +5,7 @@ import * as React from 'react';
 import { MyBalance } from './MyBalance';
 
 const DEVNET_NODE_TM_URL = 'http://devnet.regen.network:26657'; // CORS not enabled on this one yet.
-const AMAURY_NODE_TM_URL = 'http://18.223.151.187:26657';
+const AMAURY_NODE_TM_URL = 'http://hambach.regen.network:26657/';
 
 export function App(): React.ReactElement {
 	const [tmUrl, setTmUrl] = useState(AMAURY_NODE_TM_URL);
@@ -18,10 +18,7 @@ export function App(): React.ReactElement {
 		setTmError(undefined);
 
 		RegenApi.connect({
-			connection: {
-				type: 'tendermint',
-				url: tmUrl,
-			},
+			url: tmUrl,
 		})
 			.then(setApi)
 			.catch((err: Error) => {

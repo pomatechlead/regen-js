@@ -1,6 +1,8 @@
-import { adaptor34, Client as TendermintClient } from '@cosmjs/tendermint-rpc';
-
-import { Connection, createTendermintConnection } from './connection';
+import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
+import { createProtobufRpcClient, QueryClient, ProtobufRpcClient } from "@cosmjs/stargate";
+import { messageTypeRegistry } from './generated/typeRegistry';
+import { DirectSecp256k1HdWallet, Registry, GeneratedType } from "@cosmjs/proto-signing";
+import { defaultRegistryTypes, SigningStargateClient } from "@cosmjs/stargate";
 
 interface TendermintConnection {
 	type: 'tendermint';
@@ -11,7 +13,7 @@ interface TendermintConnection {
  * Options to pass into the RegenApi constructor.
  */
 export interface RegenApiOptions {
-	connection: TendermintConnection;
+	url: string;
 }
 
 /**
@@ -19,10 +21,10 @@ export interface RegenApiOptions {
  * a client connection
  */
 export class RegenApi {
-	readonly connection: Connection;
+	readonly rpc: ProtobufRpcClient;
 
-	constructor(connection: Connection) {
-		this.connection = connection;
+	constructor(rpc: ProtobufRpcClient) {
+		this.rpc = rpc;
 	}
 
 	/**
@@ -31,20 +33,28 @@ export class RegenApi {
 	 * @param options - Options to pass into RegenAPI.
 	 */
 	public static async connect(options: RegenApiOptions): Promise<RegenApi> {
-		switch (options.connection.type) {
-			case 'tendermint': {
-				const tendermintClient = await TendermintClient.connect(
-					options.connection.url,
-					// Since v0.40.0, CosmJS cannot detect the Tendermint
-					// version used by the node. Here, we just hardcode to use
-					// an adaptor for Tendermint 0.34.x.
-					adaptor34
-				);
+		const tendermintClient = await Tendermint34Client.connect(
+			options.url,
+		);
+		// The generic Stargate query client knows how to use the Tendermint client to submit unverified ABCI queries
+		const queryClient = new QueryClient(tendermintClient);
 
-				return new RegenApi(
-					createTendermintConnection(tendermintClient)
-				);
-			}
-		}
+		// This helper function wraps the generic Stargate query client for use by the specific generated query client
+		const rpcClient = createProtobufRpcClient(queryClient);
+		
+		console.log('messageTypeRegistry',messageTypeRegistry)
+		const customRegistry: Array<[string, GeneratedType]> = [];
+		messageTypeRegistry.forEach((value, key) => {
+			customRegistry.push([key, value]);
+		})
+		console.log('defaultRegistryTypes',defaultRegistryTypes)
+		const myRegistry = new Registry([
+			...defaultRegistryTypes,
+			...customRegistry,
+		]);
+
+		return new RegenApi(
+			rpcClient
+		);
 	}
 }
