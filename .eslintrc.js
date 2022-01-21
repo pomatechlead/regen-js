@@ -1,5 +1,5 @@
 module.exports = {
-	...require('@amaurym/eslintrc'),
+	// ...require('@amaurym/eslintrc'),
 	parserOptions: {
 		project: './tsconfig.json',
 	},

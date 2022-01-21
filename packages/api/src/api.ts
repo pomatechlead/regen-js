@@ -47,11 +47,11 @@ export class RegenApi {
 		messageTypeRegistry.forEach((value, key) => {
 			customRegistry.push([key, value]);
 		})
-		console.log('defaultRegistryTypes',defaultRegistryTypes)
-		const myRegistry = new Registry([
+		let myRegistry = new Registry([
 			...defaultRegistryTypes,
 			...customRegistry,
 		]);
+		console.log('myRegistry',myRegistry)
 
 		return new RegenApi(
 			rpcClient

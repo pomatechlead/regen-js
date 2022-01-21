@@ -57,7 +57,7 @@ export function App(): React.ReactElement {
 						Official Regen Devnet node
 					</button>
 					<button onClick={() => setTmUrl(AMAURY_NODE_TM_URL)}>
-						Amaury&apos;s node
+						Hmab&apos;s node
 					</button>
 				</p>
 

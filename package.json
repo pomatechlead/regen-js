@@ -19,7 +19,6 @@
 		"test": "lerna run test"
 	},
 	"devDependencies": {
-		"@amaurym/config": "amaurym/config#master",
 		"lerna": "^3.22.1",
 		"ts-jest": "^26.4.4",
 		"typescript": "^4.0.5"
