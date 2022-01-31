@@ -42,7 +42,7 @@ export class RegenApi {
 		// This helper function wraps the generic Stargate query client for use by the specific generated query client
 		const rpcClient = createProtobufRpcClient(queryClient);
 		
-    // Just testing here for adding custom msgs to registry
+		// Just testing here for adding custom msgs to registry
 		const customRegistry: Array<[string, GeneratedType]> = [];
 		messageTypeRegistry.forEach((value, key) => {
 			customRegistry.push([key, value]);
